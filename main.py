@@ -5,7 +5,6 @@ import os
 
 import maps_api
 
-
 TOKEN = "960484549:AAG_8_kO8sDTSFb99I_cH7i6XmiZMFLLmnA"
 START, TITLE, PHOTO, LOCATION = range(4)
 USER_STATE = defaultdict(lambda: START)
@@ -13,11 +12,11 @@ USER_STATE = defaultdict(lambda: START)
 bot = telebot.TeleBot(TOKEN)
 
 db = mysql.connector.connect(
-    host="127.0.0.1",
-    user="root",
-    passwd="Sekret_45",
+    host="eu-cdbr-west-03.cleardb.net",
+    user="b878db0a5e9028",
+    passwd="f1cee558",
     port=3306,
-    database="tg_bot"
+    database="heroku_ed88df0e46c7bf9"
 )
 
 cursor = db.cursor()
