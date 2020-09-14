@@ -85,15 +85,19 @@ def handle_location(message):
 
 @bot.message_handler(commands=['list'])
 def handle_list_command(message):
-    cursor.execute("SELECT place_name, image_name from places WHERE user_id = (%s)", [message.from_user.id])
+    cursor.execute("SELECT place_name, image_name, latitude, longitude from places WHERE user_id = (%s)", [message.from_user.id])
     res = cursor.fetchall()
     res = res[len(res) - 10:len(res)]
     if len(res):
         for info in res:
             place_name = str(info[0])
-            img_name = str(info[1])
-            image = open("images/" + img_name, "rb")
-            bot.send_photo(message.chat.id, image, place_name)
+            try:
+                img_name = str(info[1])
+                image = open("images/" + img_name, "rb")
+                bot.send_photo(message.chat.id, image, place_name)
+            except FileNotFoundError:
+                bot.send_message(message.chat.id, place_name)
+                bot.send_location(message.chat.id, info[2], info[3])
     else:
         bot.send_message(message.chat.id, "Нет добавленных мест")
 
