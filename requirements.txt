@@ -1,4 +1,4 @@
 pyTelegramBotAPI==3.7.3
-requests=2.7.0
+requests==2.7.0
 mysql-connector-python==8.0.21
 telebot==0.0.3
