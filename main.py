@@ -109,7 +109,7 @@ def handle_location(message):
     res = cursor.fetchall()
     loc = message.location
     dists = []
-    bot.send_message(message.chat.id, "Обрабатываем...")
+    bot.send_message(message.chat.id, "Ждите. Обрабатываем...")
     for place_id, place_name, lat, long in res:
         dists.append((place_id, place_name, maps_api.get_distance(loc.latitude, loc.longitude, lat, long), lat, long))
 
