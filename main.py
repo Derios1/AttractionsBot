@@ -1,22 +1,24 @@
 import telebot
 import mysql.connector
-from collections import defaultdict
 import os
+
+from collections import defaultdict
+from config import TOKEN, database_config
 
 import maps_api
 
-TOKEN = "960484549:AAG_8_kO8sDTSFb99I_cH7i6XmiZMFLLmnA"
+
 START, TITLE, PHOTO, LOCATION = range(4)
 USER_STATE = defaultdict(lambda: START)
 
 bot = telebot.TeleBot(TOKEN)
 
 db = mysql.connector.connect(
-    host="eu-cdbr-west-03.cleardb.net",
-    user="b878db0a5e9028",
-    passwd="f1cee558",
-    port=3306,
-    database="heroku_ed88df0e46c7bf9"
+    host=database_config["host"],
+    user=database_config["user"],
+    passwd=database_config["passwd"],
+    port=database_config["port"],
+    database=database_config["database"]
 )
 
 cursor = db.cursor()
@@ -78,14 +80,16 @@ def handle_location(message):
         tuple(values[message.chat.id]))
     db.commit()
     bot.send_message(message.chat.id,
-                     "Место добавлено!. Введи /add, чтобы начать добавлять новое место. Введи /list для просмотра последних 10 добавленных мест.")
+                     "Место добавлено!. Введи /add, чтобы начать добавлять новое место. Введи /list для просмотра "
+                     "последних 10 добавленных мест.")
     values[message.chat.id].clear()
     update_state(message, START)
 
 
 @bot.message_handler(commands=['list'])
 def handle_list_command(message):
-    cursor.execute("SELECT place_name, image_name, latitude, longitude from places WHERE user_id = (%s)", [message.from_user.id])
+    cursor.execute("SELECT place_name, image_name, latitude, longitude from places WHERE user_id = (%s)",
+                   [message.from_user.id])
     res = cursor.fetchall()
     res = res[len(res) - 10:len(res)]
     if len(res):

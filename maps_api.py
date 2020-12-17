@@ -1,6 +1,6 @@
 import requests
+from config import MAP_TOKEN
 
-MAP_TOKEN = "ArDNY63QOW78xmYyRUvxCS2uTV0agbQKSiygnc_ubottSt-Jz1xmKXO2KIu5R7Na"
 url = "https://dev.virtualearth.net/REST/v1/Routes/DistanceMatrix?"
 params = "origins={lat1},{long1}&destinations={lat2},{long2}&travelMode=walking&key={key}"
 
